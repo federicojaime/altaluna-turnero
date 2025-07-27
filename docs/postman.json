@@ -1,0 +1,942 @@
+{
+    "info": {
+        "name": "Altaluna Turnero API",
+        "description": "Colección completa de endpoints para el sistema de turnos médicos de Altaluna",
+        "version": "1.0.0",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "🏥 Health & Info",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/health",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "health"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "API Root",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                ""
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🔐 Authentication",
+            "item": [
+                {
+                    "name": "Login - Primera vez con DNI",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    if (response.access_token) {",
+                                    "        pm.globals.set('authToken', response.access_token);",
+                                    "        console.log('Token guardado:', response.access_token);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"matricula\": \"12345\",\n  \"password\": \"12345678\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login - Con contraseña configurada",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    if (response.access_token) {",
+                                    "        pm.globals.set('authToken', response.access_token);",
+                                    "        console.log('Token guardado:', response.access_token);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"matricula\": \"12345\",\n  \"password\": \"miPassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Setup Password - Primera vez",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"matricula\": \"12345\",\n  \"password\": \"miNuevaPassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/setup-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "setup-password"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/profile",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "profile"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    if (response.access_token) {",
+                                    "        pm.globals.set('authToken', response.access_token);",
+                                    "        console.log('Token refrescado:', response.access_token);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/refresh",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "refresh"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Change Password",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"currentPassword\": \"passwordActual123\",\n  \"newPassword\": \"nuevoPassword123\",\n  \"confirmNewPassword\": \"nuevoPassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/change-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "change-password"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Test Protected Endpoint",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/test-protected",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "test-protected"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🏥 Testing & Debug",
+            "item": [
+                {
+                    "name": "Test Dígito Verificador",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/test-digito/12345",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "test-digito",
+                                "12345"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Hash - Con 'contra'",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"password\": \"miPassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/generate-hash-contra",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "generate-hash-contra"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Hash - Normal",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"password\": \"miPassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/generate-hash-normal",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "generate-hash-normal"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👨‍⚕️ Doctors",
+            "item": [
+                {
+                    "name": "Get All Doctors",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/doctors",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "doctors"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Active Doctors",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/doctors/active",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "doctors",
+                                "active"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Doctor by Matricula",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/doctors/123456",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "doctors",
+                                "123456"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Doctors",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/doctors/search?q=García",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "doctors",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "García"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Doctors by Clinic",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/doctors/by-clinic/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "doctors",
+                                "by-clinic",
+                                "1"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🏢 Clinics",
+            "item": [
+                {
+                    "name": "Get All Clinics",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/clinics",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "clinics"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Clinic",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nombre\": \"Clínica Central\",\n  \"direccion\": \"Av. Principal 123\",\n  \"telefono\": \"011-1234-5678\",\n  \"email\": \"info@clinicacentral.com\",\n  \"ciudad\": \"Buenos Aires\",\n  \"provincia\": \"Buenos Aires\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/clinics",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "clinics"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Clinic by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/clinics/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "clinics",
+                                "1"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👥 Patients",
+            "item": [
+                {
+                    "name": "Get All Patients",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/patients",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "patients"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Patient",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"dni\": 12345678,\n  \"apellido\": \"García\",\n  \"nombre\": \"Juan Carlos\",\n  \"sexo\": \"M\",\n  \"email\": \"juan.garcia@email.com\",\n  \"telefono\": \"011-9876-5432\",\n  \"fechac\": \"1985-05-15\",\n  \"ciudad\": \"Buenos Aires\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/patients",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "patients"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Patient by DNI",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/patients/by-dni/12345678",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "patients",
+                                "by-dni",
+                                "12345678"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Patients",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/patients/search?q=García",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "patients",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "García"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "📅 Appointments",
+            "item": [
+                {
+                    "name": "Get All Appointments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Appointment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"matricula\": 123456,\n  \"clinicaId\": 1,\n  \"pacienteId\": 1,\n  \"fecha\": \"2025-07-30\",\n  \"horaInicio\": \"09:00\",\n  \"horaFin\": \"09:30\",\n  \"motivo\": \"Consulta general\",\n  \"precio\": 5000\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Appointments by Doctor",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments/by-doctor/123456",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments",
+                                "by-doctor",
+                                "123456"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Appointments by Patient",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments/by-patient/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments",
+                                "by-patient",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Check Availability",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments/availability?matricula=123456&fecha=2025-07-30&horaInicio=10:00&horaFin=10:30",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments",
+                                "availability"
+                            ],
+                            "query": [
+                                {
+                                    "key": "matricula",
+                                    "value": "123456"
+                                },
+                                {
+                                    "key": "fecha",
+                                    "value": "2025-07-30"
+                                },
+                                {
+                                    "key": "horaInicio",
+                                    "value": "10:00"
+                                },
+                                {
+                                    "key": "horaFin",
+                                    "value": "10:30"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Confirm Appointment",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments/1/confirm",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments",
+                                "1",
+                                "confirm"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Complete Appointment",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/appointments/1/complete",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "appointments",
+                                "1",
+                                "complete"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🏥 Specialties",
+            "item": [
+                {
+                    "name": "Get All Specialties",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/specialties",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "specialties"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Active Specialties",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/specialties/active",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "specialties",
+                                "active"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Specialties",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/specialties/search?q=cardiología",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "specialties",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "cardiología"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Auto-configurar baseUrl si no está definida",
+                    "if (!pm.variables.get('baseUrl')) {",
+                    "    pm.variables.set('baseUrl', 'http://localhost:3000/api/v1');",
+                    "}"
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000/api/v1",
+            "type": "string"
+        },
+        {
+            "key": "authToken",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
